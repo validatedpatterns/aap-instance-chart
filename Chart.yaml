@@ -1,7 +1,7 @@
 apiVersion: v2
-description: A Helm chart to configure ansible-automation-platform
+description: A Helm chart to install an ansible-automation-platform instance
 keywords:
 - pattern
-name: ansible-automation-platform
+name: ansible-automation-platform-instance
 version: 0.1.0
 dependencies:
