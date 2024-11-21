@@ -1,0 +1,29 @@
+---
+name: Helm lint
+
+#
+# Documentation:
+# https://help.github.com/en/articles/workflow-syntax-for-github-actions
+#
+
+permissions: read-all
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Run helm lint over the chart
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup helm
+        uses: azure/setup-helm@v4
+        with:
+          version: 'v3.14.0'
+
+      - name: Run make helmlint
+        run: |
+          make helm-lint

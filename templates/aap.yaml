@@ -1,0 +1,15 @@
+---
+apiVersion: aap.ansible.com/v1alpha1
+kind: AnsibleAutomationPlatform
+metadata:
+  name: aap
+  namespace: ansible-automation-platform
+spec:
+  controller:
+    disabled: false
+  eda:
+    disabled: {{ coalesce .Values.aap.eda_disabled "false"  }}
+  hub:
+    disabled: {{ coalesce .Values.aap.hub_disabled "false"  }}
+  lightspeed:
+    disabled: {{ coalesce .Values.aap.lightspeed_disabled "false" }}

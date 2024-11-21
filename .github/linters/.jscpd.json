@@ -1,0 +1,10 @@
+{
+    "ignore": [
+        "templates/plumbing/applications.yaml",
+        "templates/imperative/_helpers.tpl",
+        "templates/core/subscriptions.yaml",
+        "templates/core/namespaces.yaml",
+        "templates/core/nodes.yaml",
+        "templates/_helpers.tpl"
+    ]
+}

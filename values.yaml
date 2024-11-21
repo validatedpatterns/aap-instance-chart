@@ -1,0 +1,8 @@
+---
+global:
+  hubClusterDomain: example.com
+
+aap:
+  eda_disabled: false
+  hub_disabled: true
+  lightspeed_disabled: true

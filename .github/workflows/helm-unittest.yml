@@ -1,0 +1,25 @@
+---
+name: Helm Unit Test
+
+#
+# Documentation:
+# https://help.github.com/en/articles/workflow-syntax-for-github-actions
+#
+
+permissions: read-all
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Run helm lint over the chart
+    # It has to be 24.04 because -latest has a podman version that is too old
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run make helmlint
+        run: |
+          make helm-unittest

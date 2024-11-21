@@ -1,0 +1,31 @@
+---
+name: Verify json schema
+on: [push, pull_request]
+
+permissions: read-all
+
+jobs:
+  jsonschema_tests:
+    name: Json Schema tests
+    strategy:
+      matrix:
+        python-version: [3.11.3]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install check-jsonschema
+
+      - name: Verify ClusterGroup values.schema.json
+        run: |
+          check-jsonschema --schemafile ./values.schema.json "values.yaml"
