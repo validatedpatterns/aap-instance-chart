@@ -1,8 +1,8 @@
-# ansible-automation-platform
+# ansible-automation-platform-instance
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
 
-A Helm chart to configure ansible-automation-platform
+A Helm chart to install an ansible-automation-platform instance
 
 This chart is used to set up the Ansible Automation Platform Operator version 2.5.
 
