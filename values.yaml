@@ -2,7 +2,15 @@
 global:
   hubClusterDomain: example.com
 
+eePullSecret:
+  manage: false
+  key: secret/data/hub/ee-pull-secret
+
 aap:
   eda_disabled: false
   hub_disabled: true
   lightspeed_disabled: true
+
+secretStore:
+  name: vault-backend
+  kind: ClusterSecretStore

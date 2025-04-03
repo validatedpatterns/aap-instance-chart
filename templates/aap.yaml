@@ -6,6 +6,9 @@ metadata:
   namespace: ansible-automation-platform
 spec:
   controller:
+{{- if .Values.eePullSecret.manage }}
+    ee_pull_credentials_secret: ee-pull-secret
+{{- end }}
     disabled: false
   eda:
     disabled: {{ coalesce .Values.aap.eda_disabled "false"  }}
