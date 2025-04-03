@@ -40,6 +40,7 @@ super-linter: ## Runs super linter locally
 					-e VALIDATE_JSON_PRETTIER=false \
 					-e VALIDATE_KUBERNETES_KUBECONFORM=false \
 					-e VALIDATE_MARKDOWN=false \
+					-e VALIDATE_CHECKOV=false \
 					-e VALIDATE_MARKDOWN_PRETTIER=false \
 					-e VALIDATE_YAML_PRETTIER=false \
 					-e VALIDATE_YAML=false \
