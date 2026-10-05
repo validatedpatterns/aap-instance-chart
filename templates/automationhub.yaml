@@ -1,0 +1,10 @@
+{{- if and (not .Values.aap.hub_disabled) (semverCompare "<2.5.0" (toString .Values.aap.release)) }}
+---
+apiVersion: automationhub.ansible.com/v1beta1
+kind: AutomationHub
+metadata:
+  name: hub
+  namespace: ansible-automation-platform
+spec:
+  {{- include "aap.hubStorage" . | nindent 2 }}
+{{- end }}

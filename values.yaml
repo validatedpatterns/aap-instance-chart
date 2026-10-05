@@ -1,16 +1,44 @@
 ---
 global:
+  # -- Domain used in the OpenShift console link for the platform route.
   hubClusterDomain: example.com
 
 eePullSecret:
+  # -- Create an ExternalSecret for the automation controller execution environment pull secret.
   manage: false
+  # -- Vault path passed to the ExternalSecret extract key.
   key: secret/data/hub/ee-pull-secret
 
 aap:
+  # -- Ansible Automation Platform release. Releases before 2.5 deploy automation hub as a standalone AutomationHub resource.
+  release: "2.5"
+  # -- Disable Event-Driven Ansible.
   eda_disabled: false
+  # -- Disable automation hub. Enable hub only when the validated patterns OpenShift Data Foundations chart is installed in the same cluster.
   hub_disabled: true
+  # -- Disable Ansible Lightspeed.
   lightspeed_disabled: true
 
+# Storage defaults match the storage classes created by the validated patterns
+# OpenShift Data Foundations chart (ocs-storagecluster-cephfs and ocs-storagecluster-ceph-rbd).
+hub:
+  # -- Automation hub content backend. file uses the CephFS ReadWriteMany class from the OpenShift Data Foundations chart.
+  storageType: file
+  # -- Access mode for automation hub content. CephFS from the OpenShift Data Foundations chart provides ReadWriteMany.
+  fileStorageAccessMode: ReadWriteMany
+  # -- Size of the automation hub content volume.
+  fileStorageSize: 100Gi
+  # -- Storage class for automation hub content. Created by the OpenShift Data Foundations chart.
+  fileStorageStorageClass: ocs-storagecluster-cephfs
+  # -- Storage class for the automation hub Redis volume. Created by the OpenShift Data Foundations chart.
+  redisStorageClass: ocs-storagecluster-ceph-rbd
+  # -- Size of the automation hub Redis volume.
+  redisStorageSize: 10Gi
+  # -- Storage class for the automation hub PostgreSQL volume. Created by the OpenShift Data Foundations chart.
+  postgresStorageClass: ocs-storagecluster-ceph-rbd
+
 secretStore:
+  # -- External Secrets store used when eePullSecret.manage is true.
   name: vault-backend
+  # -- External Secrets store kind.
   kind: ClusterSecretStore
