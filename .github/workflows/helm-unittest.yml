@@ -6,7 +6,7 @@ name: Helm Unit Test
 # https://help.github.com/en/articles/workflow-syntax-for-github-actions
 #
 
-permissions: read-all
+permissions: read-all # zizmor: ignore[excessive-permissions]
 
 on: [push, pull_request]
 
@@ -18,7 +18,9 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
 
       - name: Run make helmlint
         run: |
