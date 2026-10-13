@@ -1,0 +1,131 @@
+suite: ansible automation platform instance
+templates:
+  - aap.yaml
+tests:
+  - it: disables hub by default
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: AnsibleAutomationPlatform
+      - equal:
+          path: spec.hub.disabled
+          value: true
+      - notExists:
+          path: spec.hub.storage_type
+      - notExists:
+          path: spec.hub.file_storage_storage_class
+  - it: configures hub on the platform resource for release 2.5
+    set:
+      aap.hub_disabled: false
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: spec.hub.disabled
+          value: false
+      - equal:
+          path: spec.hub.storage_type
+          value: file
+      - equal:
+          path: spec.hub.file_storage_access_mode
+          value: ReadWriteMany
+      - equal:
+          path: spec.hub.file_storage_size
+          value: 100Gi
+      - equal:
+          path: spec.hub.file_storage_storage_class
+          value: ocs-storagecluster-cephfs
+      - equal:
+          path: spec.hub.redis_storage_class
+          value: ocs-storagecluster-ceph-rbd
+      - equal:
+          path: spec.hub.redis_storage_size
+          value: 10Gi
+      - equal:
+          path: spec.hub.postgres_storage_class
+          value: ocs-storagecluster-ceph-rbd
+  - it: honors hub storage overrides
+    set:
+      aap.hub_disabled: false
+      hub.fileStorageStorageClass: custom-cephfs
+      hub.fileStorageSize: 200Gi
+      hub.redisStorageClass: custom-rbd
+    asserts:
+      - equal:
+          path: spec.hub.file_storage_storage_class
+          value: custom-cephfs
+      - equal:
+          path: spec.hub.file_storage_size
+          value: 200Gi
+      - equal:
+          path: spec.hub.redis_storage_class
+          value: custom-rbd
+  - it: omits nested hub on releases before 2.5
+    set:
+      aap.release: "2.4"
+      aap.hub_disabled: false
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: AnsibleAutomationPlatform
+      - notExists:
+          path: spec.hub
+---
+suite: standalone automation hub
+templates:
+  - automationhub.yaml
+tests:
+  - it: does not render hub by default
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: does not render hub for release 2.5 when hub is enabled
+    set:
+      aap.hub_disabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: deploys a standalone AutomationHub on releases before 2.5
+    set:
+      aap.release: "2.4"
+      aap.hub_disabled: false
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: AutomationHub
+      - equal:
+          path: metadata.name
+          value: hub
+      - equal:
+          path: spec.storage_type
+          value: file
+      - equal:
+          path: spec.file_storage_access_mode
+          value: ReadWriteMany
+      - equal:
+          path: spec.file_storage_storage_class
+          value: ocs-storagecluster-cephfs
+      - equal:
+          path: spec.redis_storage_class
+          value: ocs-storagecluster-ceph-rbd
+      - equal:
+          path: spec.postgres_storage_class
+          value: ocs-storagecluster-ceph-rbd
+  - it: skips standalone hub when hub is disabled on an older release
+    set:
+      aap.release: "2.4"
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: accepts an unquoted release number
+    set:
+      aap.release: 2.4
+      aap.hub_disabled: false
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: AutomationHub

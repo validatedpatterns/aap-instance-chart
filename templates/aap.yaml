@@ -12,7 +12,12 @@ spec:
     disabled: false
   eda:
     disabled: {{ coalesce .Values.aap.eda_disabled "false"  }}
+{{- if semverCompare ">=2.5.0" (toString .Values.aap.release) }}
   hub:
-    disabled: {{ coalesce .Values.aap.hub_disabled "false"  }}
+    disabled: {{ .Values.aap.hub_disabled }}
+{{- if not .Values.aap.hub_disabled }}
+    {{- include "aap.hubStorage" . | nindent 4 }}
+{{- end }}
+{{- end }}
   lightspeed:
     disabled: {{ coalesce .Values.aap.lightspeed_disabled "false" }}

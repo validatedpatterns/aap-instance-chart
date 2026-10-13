@@ -34,9 +34,10 @@ helm-docs: ## Generates README.md from values.yaml
 test: helm-lint helm-unittest ## Runs helm lint and unit tests
 
 .PHONY: super-linter
-super-linter: ## Runs super linter locally
+super-linter: ## Runs super linter locally (mirrors .github/workflows/superlinter.yml)
 	rm -rf .mypy_cache
-	podman run -e RUN_LOCAL=true -e USE_FIND_ALGORITHM=true	\
+	podman run -e RUN_LOCAL=true -e USE_FIND_ALGORITHM=true \
+					-e VALIDATE_GIT_COMMITLINT=false \
 					-e VALIDATE_JSON_PRETTIER=false \
 					-e VALIDATE_KUBERNETES_KUBECONFORM=false \
 					-e VALIDATE_MARKDOWN=false \
@@ -49,11 +50,10 @@ super-linter: ## Runs super linter locally
 					-e VALIDATE_NATURAL_LANGUAGE=false \
 					-e VALIDATE_SPELL_CODESPELL=false \
 					-e VALIDATE_PYTHON_BLACK=false \
-					-e VALIDATE_PYTHON_PYINK=false \
 					-e VALIDATE_PYTHON_PYLINT=false \
 					-e VALIDATE_PYTHON_RUFF_FORMAT=false \
 					-e VALIDATE_SHELL_SHFMT=false \
 					-e VALIDATE_TRIVY=false \
 					-v $(PWD):/tmp/lint:rw,z \
 					-w /tmp/lint \
-					ghcr.io/super-linter/super-linter:slim-v8
+					ghcr.io/super-linter/super-linter:slim-v8.6.0

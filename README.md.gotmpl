@@ -7,6 +7,20 @@
 
 This chart is used to set up the Ansible Automation Platform Operator version 2.5.
 
+Automation hub is optional and disabled by default.
+
+When automation hub is enabled, content storage uses the ReadWriteMany CephFS
+storage class created by the validated patterns OpenShift Data Foundations chart
+(`ocs-storagecluster-cephfs`). Redis and hub PostgreSQL use
+`ocs-storagecluster-ceph-rbd` from that same chart. Install the OpenShift Data
+Foundations chart in the cluster before enabling hub.
+
+Releases before 2.5 deploy hub as a standalone `AutomationHub` resource.
+Releases from 2.5 onward configure hub on the `AnsibleAutomationPlatform` resource.
+
+Automation orchestrator is installed by the automation-orchestrator chart, with
+its PostgreSQL cluster installed by the cloudnative-pg chart.
+
 {{ template "chart.homepageLine" . }}
 
 {{ template "chart.maintainersSection" . }}
