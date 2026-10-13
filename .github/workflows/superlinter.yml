@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
           # Full git history is needed to get a proper list of changed files within `super-linter`
@@ -29,6 +29,7 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # These are the validation we disable atm
+          VALIDATE_GIT_COMMITLINT: false
           VALIDATE_JSON_PRETTIER: false
           VALIDATE_KUBERNETES_KUBECONFORM: false
           VALIDATE_MARKDOWN: false
@@ -41,7 +42,6 @@ jobs:
           VALIDATE_NATURAL_LANGUAGE: false
           VALIDATE_SPELL_CODESPELL: false
           VALIDATE_PYTHON_BLACK: false
-          VALIDATE_PYTHON_PYINK: false
           VALIDATE_PYTHON_PYLINT: false
           VALIDATE_PYTHON_RUFF_FORMAT: false
           VALIDATE_SHELL_SHFMT: false
